@@ -1,0 +1,7 @@
+replicas: 1
+
+image:
+  repository: image
+  tag: latest
+  pullPolicy: []
+  pullSecrets: []

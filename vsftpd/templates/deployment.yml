@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {{ include "metadata.common" . | nindent 2 }}
+spec:
+  replicas: {{ .Values.replicas | default 0 }}
+  selector:
+    matchLabels: {{ include "metadata.labels.name" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "metadata.labels.name" . | nindent 8 }}
+    spec:
+      containers:
+      - name: vsftpd
+        image: {{ include "deployment.image" . }}

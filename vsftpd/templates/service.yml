@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: Service
+metadata: {{ include "metadata.common" . | nindent 2 }}
+spec: {}
