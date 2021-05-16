@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: {{ include "metadata.common" . | nindent 2 }}
+metadata: {{ include "service.ftp.metadata" . | nindent 2 }}
   annotations:
-    checksum/webconfig: {{ include (print $.Template.BasePath "/configmap.yml") . | sha256sum }}
+    checksum/webconfig: {{ include (print $.Template.BasePath "/configmap-vsftpd.yml") . | sha256sum }}
     checksum/config: {{ include (print $.Template.BasePath "/secrets.yml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicas | default 0 }}
@@ -12,14 +12,13 @@ spec:
     metadata:
       labels: {{ include "metadata.labels.name" . | nindent 8 }}
     spec:
-      # hostNetwork: true
+      hostNetwork: true
       containers:
-      - name: web
-        image: nginx:stable
-        ports:
-        - containerPort: 80
       - name: vsftpd
         image: {{ include "deployment.image" . }}
+        envFrom:
+        - configMapRef: {{ include "ftp.configmap.metadata.name" . | nindent 12 }}
+        - secretRef: {{ include "metadata.name" . | nindent 12 }}
         ports:
         - containerPort: 21
         - containerPort: 20
