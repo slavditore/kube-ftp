@@ -34,7 +34,7 @@ imagePullPolicy: {{ .Values.image.pullPolicy }}
 
 {{- define "deployment.image.pullsecrets" -}}
 {{ if .Values.image.pullSecrets }}
-pullSecrets: 
+imagePullSecrets: 
 {{- range .Values.image.pullSecrets }}
 - {{ . }}
 {{- end }}
@@ -56,8 +56,17 @@ pullSecrets:
 - protocol: TCP
   port: {{ . }}
   targetPort: {{ . }}
+  name: {{printf "app-port-%d" . }}
 {{- end }}
 {{- end }}
+- protocol: TCP
+  port: 21
+  targetPort: 21
+  name: "data"
+- protocol: TCP
+  port: 20
+  targetPort: 20
+  name: "command"
 {{- end -}}
 
 {{- define "service.httpports" -}}

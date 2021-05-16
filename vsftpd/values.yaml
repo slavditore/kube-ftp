@@ -4,9 +4,6 @@ image:
   repository: fauria/vsftpd
   tag: latest
   pullPolicy: IfNotPresent
-  pullSecrets:
-  - "1"
-  - "2"
 
 vsftpd:
   user:
@@ -15,5 +12,5 @@ vsftpd:
   mode:
     passive:
       enabled: true
-      startPort: 21100
-      endPort: 21110
+      startPort: 32100
+      endPort: 32102
