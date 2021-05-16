@@ -13,7 +13,7 @@ app.kubernetes.io/name: {{ .Release.Name }}
 {{- end -}}
 {{- define "metadata.labels" -}}
 {{ include "metadata.labels.name" . }}
-app.kubernetes.io/version: {{ .Chart.Version }}
+app.kubernetes.io/version: {{ coalesce .Chart.AppVersion .Chart.Version }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 {{- end -}}
