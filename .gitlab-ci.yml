@@ -9,3 +9,7 @@ before_script:
 lint:
     script:
         - "helm lint vsftpd/"
+
+test:
+    script:
+        - "helm template vsftpd/"
