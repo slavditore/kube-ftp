@@ -1,7 +1,7 @@
 replicas: 1
 
 image:
-  repository: image
+  repository: fauria/vsftpd
   tag: latest
   pullPolicy: IfNotPresent
   pullSecrets:
@@ -12,3 +12,8 @@ vsftpd:
   user:
     name: admin
     password: fnm,nbvcx
+  mode:
+    passive:
+      enabled: true
+      startPort: 21100
+      endPort: 21110

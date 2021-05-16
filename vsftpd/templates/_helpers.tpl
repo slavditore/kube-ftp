@@ -2,9 +2,13 @@
 name: {{ print .Chart.Name "-" .Release.Name | trunc 63 }}
 {{- end -}}
 
+{{- define "metadata.namespace" -}}
+namespace: {{ print .Release.Namespace }}
+{{- end -}}
+
 {{- define "metadata.common" -}}
 {{ include "metadata.name" . }}
-namespace: {{ print .Release.Namespace }}
+{{ include "metadata.namespace" . }}
 labels: {{ include "metadata.labels" . | nindent 2 }}
 {{- end -}}
 
@@ -35,4 +39,45 @@ pullSecrets:
 - {{ . }}
 {{- end }}
 {{- end }}
+{{- end -}}
+
+{{- define "pasvcontainerports" -}}
+{{- if eq .Values.vsftpd.mode.passive.enabled true }}
+{{- range untilStep (int .Values.vsftpd.mode.passive.startPort) (int (add1 .Values.vsftpd.mode.passive.endPort)) (int 1) }}  
+- containerPort: {{ . }}
+{{- end }}
+{{- end }}
+{{- end -}}
+
+
+{{- define "service.pasvports" -}}
+{{- if eq .Values.vsftpd.mode.passive.enabled true }}
+{{- range untilStep (int .Values.vsftpd.mode.passive.startPort) (int (add1 .Values.vsftpd.mode.passive.endPort)) (int 1) }}  
+- protocol: TCP
+  port: {{ . }}
+  targetPort: {{ . }}
+{{- end }}
+{{- end }}
+{{- end -}}
+
+{{- define "service.httpports" -}}
+- protocol: TCP
+  port: 80
+  targetPort: 80
+{{- end -}}
+
+{{- define "service.http.metadata" -}}
+name: {{ print "http-" .Chart.Name "-" .Release.Name | trunc 63 }}
+{{ include "metadata.namespace" .}}
+labels: 
+  app.kubernetes.io/component: http
+{{- include "metadata.labels" . | nindent 2}}
+{{- end -}}
+
+{{- define "service.ftp.metadata" -}}
+name: {{ print "ftp-" .Chart.Name "-" .Release.Name | trunc 63 }}
+{{ include "metadata.namespace" .}}
+labels: 
+  app.kubernetes.io/component: ftp
+{{- include "metadata.labels" . | nindent 2}}
 {{- end -}}
