@@ -1,4 +1,7 @@
 image: alpine:latest
+stages:
+    - lint
+    - test
 
 before_script:
     - "wget https://get.helm.sh/helm-v3.5.4-linux-amd64.tar.gz"
@@ -7,9 +10,11 @@ before_script:
     - "helm version" 
 
 lint:
+    stage: lint
     script:
         - "helm lint vsftpd/"
 
-test:
+perform_test:
+    stage: test
     script:
         - "helm template vsftpd/"
