@@ -1,9 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: {{ include "service.http.metadata" . | nindent 2 }}
-  annotations:
-    checksum/webconfig: {{ include (print $.Template.BasePath "/configmap-nginx.yml") . | sha256sum }}
-    checksum/config: {{ include (print $.Template.BasePath "/secrets.yml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicas | default 0 }}
   selector:
@@ -11,11 +8,26 @@ spec:
   template:
     metadata:
       labels: {{ include "metadata.labels.name" . | nindent 8 }}
+      annotations:
+        checksum/webconfig: {{ include (print $.Template.BasePath "/configmap-nginx.yml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/secrets.yml") . | sha256sum }}
     spec:
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: {{ include "pvc.name" .}}
+      - name: conf
+        configMap: {{ include "http.configmap.metadata.name" . | nindent 10 }}
       containers:
       - name: web
         image: nginx:stable
         ports:
         - containerPort: 80
+        volumeMounts:
+        - mountPath: "/var/www/vsftpd"
+          name: storage
+        - mountPath: "/etc/nginx/nginx.conf"
+          subPath: "nginx.conf"
+          name: conf
         {{- include "deployment.image.pullpolicy" . | indent 8 -}}
 {{- include "deployment.image.pullsecrets" . | indent 6 -}}

@@ -17,3 +17,8 @@ vsftpd:
   conf:
     fileMode: "0666"
     umask: "077"
+
+storage:
+  storageClass: "standard"
+  size: "5Gi"
+  pvcName: ""

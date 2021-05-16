@@ -1,0 +1,12 @@
+{{- if not .Values.storage.pvcName -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {{ include "metadata.common" . | nindent 2}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ required "Volume size must be defined" .Values.storage.size }}
+  storageClassName: {{ required "Storage class must be defined" .Values.storage.storageClass }}
+{{- end -}}
