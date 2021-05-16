@@ -21,3 +21,18 @@ helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 {{- define "deployment.image" -}}
 {{ printf "%s:%s" (required "Image repository must be defined." .Values.image.repository) (.Values.image.tag | default "latest")}}
 {{- end -}}
+
+{{- define "deployment.image.pullpolicy" -}}
+{{- if .Values.image.pullPolicy }}
+imagePullPolicy: {{ .Values.image.pullPolicy }}
+{{- end }}
+{{- end -}}
+
+{{- define "deployment.image.pullsecrets" -}}
+{{ if .Values.image.pullSecrets }}
+pullSecrets: 
+{{- range .Values.image.pullSecrets }}
+- {{ . }}
+{{- end }}
+{{- end }}
+{{- end -}}

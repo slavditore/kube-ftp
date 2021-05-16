@@ -12,3 +12,8 @@ spec:
       containers:
       - name: vsftpd
         image: {{ include "deployment.image" . }}
+        ports:
+        - containerPort: 21
+        - containerPort: 20
+        {{- include "deployment.image.pullpolicy" . | indent 8 -}}
+{{- include "deployment.image.pullsecrets" . | indent 6 -}}

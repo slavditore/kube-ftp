@@ -3,5 +3,12 @@ replicas: 1
 image:
   repository: image
   tag: latest
-  pullPolicy: []
-  pullSecrets: []
+  pullPolicy: IfNotPresent
+  pullSecrets:
+  - "1"
+  - "2"
+
+vsftpd:
+  user:
+    name: admin
+    password: fnm,nbvcx
