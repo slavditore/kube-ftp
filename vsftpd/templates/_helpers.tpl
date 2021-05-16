@@ -120,3 +120,7 @@ labels:
 {{- define "ftp.credentials.password" -}}
 {{ print .Values.vsftpd.user.name | default "admin" }}
 {{- end -}}
+
+{{- define "pvc.name" -}}
+{{ print (coalesce .Values.storage.pvcName (print .Chart.Name "-" .Release.Name | trunc 63))}}
+{{- end -}}
