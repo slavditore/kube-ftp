@@ -10,6 +10,10 @@ spec:
       labels: {{ include "metadata.labels.name" . | nindent 8 }}
     spec:
       containers:
+      - name: web
+        image: nginx:latest
+        ports:
+        - containerPort: 80
       - name: vsftpd
         image: {{ include "deployment.image" . }}
         ports:
