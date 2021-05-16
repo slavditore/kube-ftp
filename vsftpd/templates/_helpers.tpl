@@ -90,3 +90,33 @@ labels:
   app.kubernetes.io/component: ftp
 {{- include "metadata.labels" . | nindent 2}}
 {{- end -}}
+
+{{- define "http.configmap.metadata.name" -}}
+name: {{printf "http-%s-%s" .Chart.Name .Release.Name | trunc 63}}
+{{- end -}}
+{{- define "http.configmap.metadata" -}}
+{{ include "http.configmap.metadata.name" . }}
+{{ include "metadata.namespace" . }}
+labels:
+  app.kubernetes.io/component: http
+  {{- include "metadata.labels" . | nindent 2}}
+{{- end -}}
+
+{{- define "ftp.configmap.metadata.name" -}}
+name: {{printf "ftp-%s-%s" .Chart.Name .Release.Name | trunc 63}}
+{{- end -}}
+{{- define "ftp.configmap.metadata" -}}
+{{ include "ftp.configmap.metadata.name" .}}
+{{ include "metadata.namespace" .}}
+labels:
+  app.kubernetes.io/component: ftp
+  {{- include "metadata.labels" . | nindent 2}}
+{{- end -}}
+
+{{- define "ftp.credentials.username" -}}
+{{ print .Values.vsftpd.user.name | default "admin" }}
+{{- end -}}
+
+{{- define "ftp.credentials.password" -}}
+{{ print .Values.vsftpd.user.name | default "admin" }}
+{{- end -}}

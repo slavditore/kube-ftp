@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {{ include "service.http.metadata" . | nindent 2 }}
+  annotations:
+    checksum/webconfig: {{ include (print $.Template.BasePath "/configmap-nginx.yml") . | sha256sum }}
+    checksum/config: {{ include (print $.Template.BasePath "/secrets.yml") . | sha256sum }}
+spec:
+  replicas: {{ .Values.replicas | default 0 }}
+  selector:
+    matchLabels: {{ include "metadata.labels.name" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "metadata.labels.name" . | nindent 8 }}
+    spec:
+      containers:
+      - name: web
+        image: nginx:stable
+        ports:
+        - containerPort: 80
+        {{- include "deployment.image.pullpolicy" . | indent 8 -}}
+{{- include "deployment.image.pullsecrets" . | indent 6 -}}
