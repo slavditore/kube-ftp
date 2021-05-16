@@ -7,7 +7,10 @@ before_script:
     - "wget https://get.helm.sh/helm-v3.5.4-linux-amd64.tar.gz"
     - "tar -xzf helm-v3.5.4-linux-amd64.tar.gz"
     - "mv linux-amd64/helm /usr/local/bin/helm"
-    - "helm version" 
+    - "helm version"
+    - "wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz"
+    - "tar xf kubeval-linux-amd64.tar.gz"
+    - "mv kubeval /usr/local/bin"
 
 lint:
     stage: lint
@@ -18,3 +21,9 @@ perform_test:
     stage: test
     script:
         - "helm template vsftpd/"
+
+validate:
+    stage: test
+    script:
+        - "helm template vsftpd/ > helm-manifests.yml"
+        - "kubeval helm-manifests.yml"
