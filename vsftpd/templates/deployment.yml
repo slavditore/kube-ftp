@@ -12,9 +12,10 @@ spec:
     metadata:
       labels: {{ include "metadata.labels.name" . | nindent 8 }}
     spec:
+      # hostNetwork: true
       containers:
       - name: web
-        image: nginx:latest
+        image: nginx:stable
         ports:
         - containerPort: 80
       - name: vsftpd
@@ -22,5 +23,6 @@ spec:
         ports:
         - containerPort: 21
         - containerPort: 20
+        {{- include "pasvcontainerports" . | indent 8 -}}
         {{- include "deployment.image.pullpolicy" . | indent 8 -}}
 {{- include "deployment.image.pullsecrets" . | indent 6 -}}
