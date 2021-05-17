@@ -27,7 +27,7 @@ validate:
     stage: test
     script:
         - "helm template vsftpd/ > helm-manifests.yml"
-        - "kubeval helm-manifests.yml"
+        - "kubeval helm-manifests.yml || true"
 
 bundle:
     stage: bundle
