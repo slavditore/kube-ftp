@@ -18,6 +18,21 @@ spec:
           claimName: {{ include "pvc.name" .}}
       - name: conf
         configMap: {{ include "http.configmap.metadata.name" . | nindent 10 }}
+      - name: htpasswd
+        emptyDir: {}
+      initContainers:
+      - name: htpasswd
+        image: elswork/apache2-utils:latest
+        envFrom:
+        - secretRef: {{ include "metadata.name" . | nindent 12 }}
+        command:
+        - "/bin/sh"
+        - "-c"
+        args:
+        - "htpasswd -cb /opt/htpasswd/htpasswd $(FTP_USER) $(FTP_PASS)"
+        volumeMounts:
+        - mountPath: "/opt/htpasswd"
+          name: htpasswd
       containers:
       - name: web
         image: nginx:stable
@@ -29,5 +44,7 @@ spec:
         - mountPath: "/etc/nginx/nginx.conf"
           subPath: "nginx.conf"
           name: conf
+        - mountPath: "/opt/htpasswd"
+          name: htpasswd
         {{- include "deployment.image.pullpolicy" . | indent 8 -}}
 {{- include "deployment.image.pullsecrets" . | indent 6 -}}

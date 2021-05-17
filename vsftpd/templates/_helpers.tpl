@@ -91,8 +91,11 @@ labels:
 {{- include "metadata.labels" . | nindent 2}}
 {{- end -}}
 
+{{- define "http.resource.name" -}}
+{{printf "http-%s-%s" .Chart.Name .Release.Name | trunc 63}}
+{{- end -}}
 {{- define "http.configmap.metadata.name" -}}
-name: {{printf "http-%s-%s" .Chart.Name .Release.Name | trunc 63}}
+name: {{ include "http.resource.name" . }}
 {{- end -}}
 {{- define "http.configmap.metadata" -}}
 {{ include "http.configmap.metadata.name" . }}

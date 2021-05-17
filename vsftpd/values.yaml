@@ -22,3 +22,7 @@ storage:
   storageClass: "standard"
   size: "5Gi"
   pvcName: ""
+
+ingress:
+  enabled: true
+  hostname: "vsftpd.local"
