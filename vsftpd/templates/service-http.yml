@@ -4,4 +4,4 @@ metadata: {{ include "service.http.metadata" . | nindent 2 }}
 spec:
   selector: {{ include "metadata.labels.name" . | nindent 4 }}
   ports: {{ include "service.httpports" . | nindent 2 }}
-  type: NodePort
+  type: ClusterIP
