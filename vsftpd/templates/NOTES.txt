@@ -9,3 +9,4 @@ Password - {{ include "ftp.credentials.password" .}}
 
 In case you use Minikube, get an IP of the cluster and make a connect by using any FTP client:
 ftp://${MINIKUBE_IP}:21
+http://{{ .Values.ingress.hostname }}
