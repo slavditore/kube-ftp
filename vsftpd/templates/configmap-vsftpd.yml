@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: {{ include "ftp.configmap.metadata" . | nindent 2 }}
+data: 
+  {{- if .Values.vsftpd.mode.passive.enabled }}
+  PASV_ENABLE: {{if eq .Values.vsftpd.mode.passive.enabled true }}"YES"{{else}}"NO"{{end}}
+  PASV_MIN_PORT: {{ .Values.vsftpd.mode.passive.startPort | toString | quote}}
+  PASV_MAX_PORT: {{ .Values.vsftpd.mode.passive.endPort | toString | quote}}
+  PASV_ADDRESS: '192.168.49.2'
+  {{- end }}
+  LOG_STDOUT: "stdout"
+  PASV_PROMISCUOUS: "YES"
+  PORT_PROMISCUOUS: "YES"
+  FILE_OPEN_MODE: {{ default .Values.vsftpd.conf.fileMode "0666" | toString | quote}}
+  LOCAL_UMASK: {{ default .Values.vsftpd.conf.umask "077" | toString | quote }}

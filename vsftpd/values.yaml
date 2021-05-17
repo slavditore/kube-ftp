@@ -1,0 +1,28 @@
+replicas: 1
+
+image:
+  repository: fauria/vsftpd
+  tag: latest
+  pullPolicy: IfNotPresent
+
+vsftpd:
+  user:
+    name: admin
+    password: admin
+  mode:
+    passive:
+      enabled: true
+      startPort: 32100
+      endPort: 32102
+  conf:
+    fileMode: "0666"
+    umask: "077"
+
+storage:
+  storageClass: "standard"
+  size: "5Gi"
+  pvcName: ""
+
+ingress:
+  enabled: true
+  hostname: "vsftpd.local"

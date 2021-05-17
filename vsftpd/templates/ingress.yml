@@ -1,0 +1,31 @@
+{{ if eq .Values.ingress.enabled true }}
+{{ if .Capabilities.APIVersions.Has "networking.k8s.io/v1" }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {{ include "metadata.common" . | nindent 2 }}
+spec:
+  rules:
+  - host: {{ required "Hostname must be defined" .Values.ingress.hostname }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            {{ include "http.configmap.metadata.name" . }}
+            port:
+              number: 80
+{{ else }}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata: {{ include "metadata.common" . | nindent 2 }}
+spec:
+  rules:
+  - host: {{ required "Hostname must be defined" .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ include "http.configmap.metadata.name" . }}
+          servicePort: 80
+{{ end }}
+{{ end }}

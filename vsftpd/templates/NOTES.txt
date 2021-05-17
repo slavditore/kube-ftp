@@ -1,0 +1,12 @@
+##### VSFTPD #####
+VSFTPD has been successfully deployed!
+
+{{- if eq .Release.IsInstall true }}
+Administrator credentials:
+Login - {{ include "ftp.credentials.username" . }}
+Password - {{ include "ftp.credentials.password" .}}
+{{ end }}
+
+In case you use Minikube, get an IP of the cluster and make a connect by using any FTP client:
+ftp://${MINIKUBE_IP}:21
+http://{{ .Values.ingress.hostname }}
