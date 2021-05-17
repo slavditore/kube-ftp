@@ -12,6 +12,7 @@ before_script:
     - "wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz"
     - "tar xf kubeval-linux-amd64.tar.gz"
     - "mv kubeval /usr/local/bin"
+    - "apk update && apk add curl"
 
 lint:
     stage: lint
