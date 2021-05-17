@@ -2,6 +2,7 @@ image: alpine:latest
 stages:
     - lint
     - test
+    - bundle
 
 before_script:
     - "wget https://get.helm.sh/helm-v3.5.4-linux-amd64.tar.gz"
@@ -27,3 +28,21 @@ validate:
     script:
         - "helm template vsftpd/ > helm-manifests.yml"
         - "kubeval helm-manifests.yml"
+
+bundle:
+    stage: bundle
+    only:
+        - "master"
+    script:
+        - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $(helm package vsftpd/ | cut -d: -f2) "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/vsftpd/$(cat vsftpd/Chart.yaml | grep version | cut -d: -f2 | tr -d [:space:])/vsftpd-$(cat vsftpd/Chart.yaml | grep version | cut -d: -f2 | tr -d [:space:]).tgz"'
+release:
+    image: registry.gitlab.com/gitlab-org/release-cli:latest
+    stage: bundle
+    only:
+        - "master"
+    script:
+        - echo "Release"
+    release:
+        tag_name: ${MAJOR}_${MINOR}_${REVISION}
+        description: 'Release description'
+    
