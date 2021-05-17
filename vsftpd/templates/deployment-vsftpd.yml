@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {{ include "service.ftp.metadata" . | nindent 2 }}
+spec:
+  replicas: {{ .Values.replicas | default 0 }}
+  selector:
+    matchLabels: {{ include "metadata.labels.name" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "metadata.labels.name" . | nindent 8 }}
+      annotations:
+        checksum/webconfig: {{ include (print $.Template.BasePath "/configmap-vsftpd.yml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/secrets.yml") . | sha256sum }}
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: {{ include "pvc.name" .}}
+      containers:
+      - name: vsftpd
+        image: {{ include "deployment.image" . }}
+        envFrom:
+        - configMapRef: {{ include "ftp.configmap.metadata.name" . | nindent 12 }}
+        - secretRef: {{ include "metadata.name" . | nindent 12 }}
+        volumeMounts:
+        - mountPath: "/home/vsftpd"
+          name: storage
+        ports:
+        - containerPort: 21
+        - containerPort: 20
+        {{- include "pasvcontainerports" . | indent 8 -}}
+        {{- include "deployment.image.pullpolicy" . | indent 8 -}}
+{{- include "deployment.image.pullsecrets" . | indent 6 -}}
