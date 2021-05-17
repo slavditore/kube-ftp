@@ -12,6 +12,10 @@ before_script:
     - "wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz"
     - "tar xf kubeval-linux-amd64.tar.gz"
     - "mv kubeval /usr/local/bin"
+<<<<<<< HEAD
+=======
+    - "apk update && apk add curl"
+>>>>>>> develop
 
 lint:
     stage: lint
@@ -27,7 +31,11 @@ validate:
     stage: test
     script:
         - "helm template vsftpd/ > helm-manifests.yml"
+<<<<<<< HEAD
         - "kubeval helm-manifests.yml || true"
+=======
+        - "kubeval helm-manifests.yml"
+>>>>>>> develop
 
 bundle:
     stage: bundle
