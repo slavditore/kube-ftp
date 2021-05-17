@@ -3,7 +3,7 @@
 ## Description
 
 This is an attempt to run VSFTPD in Kubernetes. 
-Inspired by [https://github.com/fauria/docker-vsftpd]
+Inspired by https://github.com/fauria/docker-vsftpd
 
 ## Known issues
 * FTP is very old protocol, so it's very insecure
@@ -13,8 +13,8 @@ Inspired by [https://github.com/fauria/docker-vsftpd]
 ## How to try
 It's possible to run it in regular Kubernetes, but for testing purposes it's better to use Minikube.
 
-1. Install (Minikube)[https://minikube.sigs.k8s.io/docs/start/] and set up a cluster
-2. Install (kubectl)[https://kubernetes.io/docs/tasks/tools/] and (Helm)[https://helm.sh/docs/intro/install/]
+1. Install [Minikube](https://minikube.sigs.k8s.io/docs/start/) and set up a cluster
+2. Install [kubectl](https://kubernetes.io/docs/tasks/tools/) and [Helm](https://helm.sh/docs/intro/install/)
 3. Install some addons for Minikube:
 ```bash
 minikube addons enable dashboard
