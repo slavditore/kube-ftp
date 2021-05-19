@@ -4,9 +4,9 @@ metadata: {{ include "ftp.configmap.metadata" . | nindent 2 }}
 data: 
   {{- if .Values.vsftpd.mode.passive.enabled }}
   PASV_ENABLE: {{if eq .Values.vsftpd.mode.passive.enabled true }}"YES"{{else}}"NO"{{end}}
-  PASV_MIN_PORT: {{ .Values.vsftpd.mode.passive.startPort | toString | quote}}
-  PASV_MAX_PORT: {{ .Values.vsftpd.mode.passive.endPort | toString | quote}}
-  PASV_ADDRESS: '192.168.49.2'
+  PASV_MIN_PORT: {{ .Values.vsftpd.mode.passive.startPort | toString | quote }}
+  PASV_MAX_PORT: {{ .Values.vsftpd.mode.passive.endPort | toString | quote }}
+  PASV_ADDRESS: {{ .Values.vsftpd.mode.passive.address | toString | quote }}
   {{- end }}
   LOG_STDOUT: "stdout"
   PASV_PROMISCUOUS: "YES"
