@@ -28,7 +28,7 @@ kubectl get nodes
 5. Clone this repo
 6. Install this Helm chart to the cluster:
 ```bash
-helm install my-ftp ./vsftpd --set vsftpd.user.name=${FTP_USER} --set vsftpd.user.name=${FTP_PASS} --set ingress.hostname=${DOMAIN}
+helm install my-ftp ./vsftpd --set vsftpd.user.name=${FTP_USER} --set vsftpd.user.name=${FTP_PASS} --set ingress.hostname=${DOMAIN} --set vsftpd.mode.passive.address=${MINIKUBE_IP}
 ```
 7. Get IP address of your cluster:
 ```bash

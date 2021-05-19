@@ -14,6 +14,7 @@ vsftpd:
       enabled: true
       startPort: 32100
       endPort: 32102
+      address: 192.168.49.2
   conf:
     fileMode: "0666"
     umask: "077"
