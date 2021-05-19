@@ -2,7 +2,7 @@ apiVersion: v2
 name: vsftpd
 type: application
 description: VSFTPD implementation for Docker
-version: 0.0.1
+version: 0.1.0
 kubeVersion: ">=1.15.0"
 home: "https://github.com/fauria/docker-vsftpd"
 appVersion: "3.0.3"
